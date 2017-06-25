@@ -28,4 +28,13 @@ public class ValidacaoSenhaTest {
          boolean retorno = validador.validarNovaSenha("abc1");
          assertEquals(false, retorno);
      }
+     
+     @Test
+     public void testeSenhaForaDoPadrao(){
+         Dicionario dic = mock(Dicionario.class);
+         when(dic.getListaDeSenhasInvalidas()).thenReturn(any());
+         VerificadorDeSenhas validador= new VerificadorDeSenhas(dic);
+         boolean retorno = validador.validarNovaSenha("123456");
+         assertEquals(false, retorno);
+     }
 }
