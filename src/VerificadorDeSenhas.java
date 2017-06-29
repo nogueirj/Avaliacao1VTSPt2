@@ -9,17 +9,20 @@
  * @author julionogueira
  */
 public class VerificadorDeSenhas {
+
     Dicionario dic;
 
     public VerificadorDeSenhas(Dicionario dic) {
         this.dic = dic;
     }
-    
-    public boolean validarNovaSenha(String senhaFornecida){
-        if(senhaFornecida.length() >= 5 && senhaFornecida.length() <= 10){
-            if(senhaFornecida.substring(0, 1).matches("\\w")){
-                if(senhaFornecida.substring(1, senhaFornecida.length()).matches("\\w")){
-                    if(!dic.getListaDeSenhasInvalidas().contains(senhaFornecida)){
+
+    public boolean validarNovaSenha(String senhaFornecida) {
+        String primeiroC = senhaFornecida.substring(0, 1);
+        String restante = senhaFornecida.substring(1, senhaFornecida.length());
+        if (senhaFornecida.length() >= 5 && senhaFornecida.length() <= 10) {
+            if (primeiroC.matches("\\w")) {
+                if (restante.matches("\\w+")) {
+                    if (!dic.getListaDeSenhasInvalidas().contains(senhaFornecida)) {
                         return true;
                     }
                 }

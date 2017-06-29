@@ -14,27 +14,44 @@ import static org.mockito.Mockito.*;
  * @author julionogueira
  */
 public class ValidacaoSenhaTest {
+
+    private final Dicionario dic;
+    private final VerificadorDeSenhas verificador;
     
     public ValidacaoSenhaTest() {
+        dic = mock(Dicionario.class);
+        verificador = new VerificadorDeSenhas(dic);
+    }
+
+    @Test
+    public void teste1SenhaInferiorA5() {
+        when(dic.getListaDeSenhasInvalidas()).thenReturn(new ArrayList<>());
+        boolean retorno = verificador.validarNovaSenha("abc1");
+        assertFalse(retorno);
+    }
+
+    @Test
+    public void testeSenhaForaDoPadrao() {
+        when(dic.getListaDeSenhasInvalidas()).thenReturn(new ArrayList<>());
+        boolean retorno = verificador.validarNovaSenha("*&%$3456");
+        assertFalse(retorno);
+    }
+
+    @Test
+    public void testeSemSenhaExistente() {
+        ArrayList<String> array = new ArrayList<>();
+        array.add("abc123");
+        when(dic.getListaDeSenhasInvalidas()).thenReturn(array);
+        boolean retorno = verificador.validarNovaSenha("abc1234");
+        assertTrue(retorno);
     }
     
-     @Test
-     public void teste1SenhaInferiorA5() {
-         ArrayList<String> array = new ArrayList<>();
-         array.add("abc123");
-         Dicionario dic = mock(Dicionario.class);
-         when(dic.getListaDeSenhasInvalidas()).thenReturn(array);
-         VerificadorDeSenhas validador= new VerificadorDeSenhas(dic);
-         boolean retorno = validador.validarNovaSenha("abc1");
-         assertEquals(false, retorno);
-     }
-     
-     @Test
-     public void testeSenhaForaDoPadrao(){
-         Dicionario dic = mock(Dicionario.class);
-         when(dic.getListaDeSenhasInvalidas()).thenReturn(any());
-         VerificadorDeSenhas validador= new VerificadorDeSenhas(dic);
-         boolean retorno = validador.validarNovaSenha("123456");
-         assertEquals(false, retorno);
-     }
+    @Test
+    public void testeComSenhaExistente() {
+        ArrayList<String> array = new ArrayList<>();
+        array.add("abc123");
+        when(dic.getListaDeSenhasInvalidas()).thenReturn(array);
+        boolean retorno = verificador.validarNovaSenha("abc123");
+        assertFalse(retorno);
+    }
 }
